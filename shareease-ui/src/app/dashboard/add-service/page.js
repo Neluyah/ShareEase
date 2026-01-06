@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar'; 
 
+// Forçage de l'URL de l'API vers ton serveur Render officiel
+const API_URL = "https://shareease-uyub.onrender.com/api";
+
 export default function AddServicePage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -51,14 +54,15 @@ export default function AddServicePage() {
     const serviceData = { ...formData, provider_id: user.id };
 
     try {
-      const response = await fetch('http://localhost:5000/api/services', {
+      // Connexion à l'API Render au lieu de localhost
+      const response = await fetch(`${API_URL}/services`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(serviceData),
       });
 
       if (response.ok) {
-        alert("🎉 Service ajouté avec succès dans ShareEase !");
+        alert("🎉 Service ajouté avec succès dans ShareEase Cloud !");
         router.push('/dashboard'); 
       } else {
         const errorData = await response.json();
@@ -66,7 +70,7 @@ export default function AddServicePage() {
       }
     } catch (error) {
       console.error("Erreur réseau :", error);
-      alert("Erreur de connexion au serveur.");
+      alert("Erreur de connexion au serveur Render.");
     }
   };
 
@@ -78,7 +82,7 @@ export default function AddServicePage() {
       <main className="max-w-2xl mx-auto py-16 px-8">
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-black text-slate-900 mb-2">Créer une offre</h1>
-          <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Extension du catalogue (ID Vendeur : #{user?.id})</p>
+          <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Cloud Publishing (ID Vendeur : #{user?.id})</p>
         </div>
         
         <form onSubmit={handleSubmit} className="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 space-y-6">
@@ -143,7 +147,7 @@ export default function AddServicePage() {
             type="submit" 
             className="w-full py-5 bg-blue-600 text-white rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-blue-700 hover:shadow-2xl shadow-blue-200 transition-all transform hover:-translate-y-1"
           >
-            Publier mon service
+            Publier mon service en ligne
           </button>
         </form>
       </main>
