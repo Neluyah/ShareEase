@@ -1,8 +1,4 @@
-Je comprends parfaitement, tu as raison : pour un dépôt GitHub et un dossier de TP, il faut que le **README** soit ultra-complet pour qu'on voie ton expertise technique au premier coup d'œil.
 
-Voici une version "Expert" qui détaille absolument tout : l'architecture, la sécurité avancée, les routes API et même la gestion des erreurs.
-
----
 
 # 🛡️ ShareEase : Écosystème de Services Sécurisé (Full-Stack)
 
