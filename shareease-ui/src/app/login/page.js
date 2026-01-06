@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Forçage de l'URL de l'API vers ton serveur Render
+const API_URL = "https://shareease-uyub.onrender.com/api";
+
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -14,7 +17,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      // Connexion au serveur distant au lieu du port 5000 local
+      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -30,13 +34,10 @@ export default function LoginPage() {
         
         // --- REDIRECTION DYNAMIQUE BASÉE SUR LE RÔLE (RBAC) ---
         if (data.role === 'admin') {
-          // L'administrateur va directement au panneau de surveillance
           router.push('/admin');
         } else if (data.role === 'provider') {
-          // Le fournisseur va à son tableau de bord de gestion
           router.push('/dashboard');
         } else {
-          // Le client classique va vers l'exploration des services
           router.push('/services');
         }
         
@@ -44,7 +45,8 @@ export default function LoginPage() {
         alert(`🛑 Erreur : ${data.error}`);
       }
     } catch (error) {
-      alert("⚠️ Impossible de contacter le serveur de sécurité (Vérifiez le port 5000)");
+      // Message mis à jour pour ton oral demain
+      alert("⚠️ Erreur : Impossible de contacter le serveur sécurisé sur Render.");
     } finally {
       setLoading(false);
     }
@@ -71,7 +73,7 @@ export default function LoginPage() {
             <div className="w-6 h-6 bg-white rotate-45"></div>
           </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Ravi de vous revoir</h1>
-          <p className="text-slate-400 font-medium mt-2">Accédez à votre espace ShareEase</p>
+          <p className="text-slate-400 font-medium mt-2">Accédez à votre espace Cloud ShareEase</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
@@ -110,7 +112,7 @@ export default function LoginPage() {
               loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-blue-600 shadow-slate-100'
             }`}
           >
-            {loading ? "Vérification..." : "Se connecter"}
+            {loading ? "Vérification Cloud..." : "Se connecter"}
           </button>
         </form>
 
