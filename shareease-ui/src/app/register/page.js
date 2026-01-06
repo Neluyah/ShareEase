@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Forçage de l'URL de production Render
+const API_URL = "https://shareease-uyub.onrender.com/api";
+
 export default function RegisterPage() {
   const router = useRouter();
   const [role, setRole] = useState('client');
@@ -14,7 +17,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Logique d'inscription réelle (Personne C & D)
+  // Logique d'inscription réelle connectée au Cloud
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -22,7 +25,8 @@ export default function RegisterPage() {
     const fullName = `${firstName} ${lastName}`;
 
     try {
-      const response = await fetch('http://localhost:5000/api/register', {
+      // Utilisation de l'API distante au lieu de localhost
+      const response = await fetch(`${API_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -36,13 +40,14 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("✨ Compte créé avec succès ! Connectez-vous maintenant.");
+        alert("✨ Compte Cloud créé avec succès ! Connectez-vous maintenant.");
         router.push('/login');
       } else {
         alert(`🛑 Erreur : ${data.error}`);
       }
     } catch (error) {
-      alert("⚠️ Erreur de connexion au serveur backend (Vérifiez qu'il tourne sur le port 5000)");
+      // Message mis à jour pour refléter l'état de la production
+      alert("⚠️ Erreur : Impossible de contacter le serveur sécurisé ShareEase sur Render.");
     } finally {
       setLoading(false);
     }
@@ -72,7 +77,7 @@ export default function RegisterPage() {
             <div className="w-6 h-6 bg-white rotate-45"></div>
           </div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">Créer un compte</h1>
-          <p className="text-slate-400 font-medium mt-3 italic">Rejoignez l'économie du partage réinventée</p>
+          <p className="text-slate-400 font-medium mt-3 italic">Hébergé sur architecture Cloud sécurisée</p>
         </div>
 
         {/* Sélecteur de Rôle */}
@@ -158,7 +163,7 @@ export default function RegisterPage() {
                 loading ? 'bg-slate-300' : 'bg-slate-900 text-white hover:bg-blue-600 hover:shadow-2xl hover:shadow-blue-100'
             }`}
           >
-            {loading ? "Création en cours..." : "Créer mon compte →"}
+            {loading ? "Déploiement des données..." : "Créer mon compte →"}
           </button>
         </form>
 
@@ -171,7 +176,7 @@ export default function RegisterPage() {
       </div>
 
       <footer className="mt-12 text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">
-        ShareEase © 2026 • Inscription Sécurisée
+        ShareEase © 2026 • SSL / TLS 1.3 Sécurisé
       </footer>
     </div>
   );
