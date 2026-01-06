@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 
+// Forçage de l'URL vers ton serveur Render officiel
+const API_URL = "https://shareease-uyub.onrender.com/api";
+
 export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -30,16 +33,18 @@ export default function ProfilePage() {
   }, []);
 
   const fetchOrders = (clientId) => {
-    fetch(`http://localhost:5000/api/client/orders/${clientId}`)
+    // Connexion au Cloud Render au lieu de localhost
+    fetch(`${API_URL}/client/orders/${clientId}`)
       .then(res => res.json())
       .then(data => setMyOrders(Array.isArray(data) ? data : []))
-      .catch(err => console.error("Erreur notifications:", err));
+      .catch(err => console.error("Erreur notifications Cloud:", err));
   };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/users/${user.id}`, {
+      // Mise à jour sur le serveur distant
+      const response = await fetch(`${API_URL}/users/${user.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ full_name: formData.name, email: formData.email })
@@ -50,28 +55,29 @@ export default function ProfilePage() {
         localStorage.setItem('user', JSON.stringify(updatedUser));
         setUser(updatedUser);
         setIsEditing(false);
-        alert("✅ Profil mis à jour avec succès !");
+        alert("✅ Profil Cloud mis à jour avec succès !");
       }
     } catch (error) {
-      alert("Erreur lors de la mise à jour");
+      alert("Erreur lors de la mise à jour distante");
     }
   };
 
   const deleteOrder = async (orderId) => {
     if (!confirm("Voulez-vous supprimer cette notification ?")) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/orders/${orderId}`, {
+      // Suppression sur le serveur Render
+      const response = await fetch(`${API_URL}/admin/orders/${orderId}`, {
         method: 'DELETE'
       });
       if (response.ok) {
         setMyOrders(myOrders.filter(o => o.id !== orderId));
       }
     } catch (error) {
-      alert("Erreur lors de la suppression");
+      alert("Erreur lors de la suppression Cloud");
     }
   };
 
-  if (!user) return <div className="p-20 text-center font-black">Chargement sécurisé...</div>;
+  if (!user) return <div className="p-20 text-center font-black animate-pulse">Chargement sécurisé depuis Render...</div>;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -98,7 +104,7 @@ export default function ProfilePage() {
         <div className="flex-1 space-y-8">
           <div className="bg-white p-12 rounded-[3.5rem] shadow-xl border border-slate-100">
             <h3 className="text-2xl font-black mb-10 text-slate-900 italic">
-              {isEditing ? "Édition du profil" : "Informations personnelles"}
+              {isEditing ? "Édition du profil Cloud" : "Informations personnelles"}
             </h3>
 
             {/* --- ACCÈS DASHBOARD POUR FOURNISSEUR UNIQUEMENT --- */}
@@ -106,7 +112,7 @@ export default function ProfilePage() {
               <div className="mb-8 p-8 bg-emerald-50 border border-emerald-100 rounded-[2.5rem] flex flex-col sm:flex-row justify-between items-center gap-6">
                 <div className="text-center sm:text-left">
                   <p className="font-black text-emerald-900 text-lg">Votre Espace Pro</p>
-                  <p className="text-sm text-emerald-600 font-bold">Gérez vos services et vos commandes reçues.</p>
+                  <p className="text-sm text-emerald-600 font-bold">Gérez vos services sur le Cloud Render.</p>
                 </div>
                 <button 
                   onClick={() => router.push('/dashboard')}
@@ -160,17 +166,17 @@ export default function ProfilePage() {
             <div className="bg-white p-12 rounded-[3.5rem] shadow-xl border border-slate-100">
               <h3 className="text-2xl font-black mb-8 text-slate-900 flex items-center gap-4">
                 <div className="w-2 h-8 bg-blue-600 rounded-full"></div>
-                Suivi de mes commandes
+                Suivi de mes commandes (Cloud Render)
               </h3>
               <div className="space-y-4">
                 {myOrders.length === 0 ? (
-                  <p className="italic text-slate-400 font-medium text-center py-4">Aucune commande à afficher.</p>
+                  <p className="italic text-slate-400 font-medium text-center py-4">Aucune commande reçue depuis le serveur.</p>
                 ) : (
                   myOrders.map(order => (
                     <div key={order.id} className="p-6 bg-slate-50 border border-slate-100 rounded-[2rem] flex justify-between items-center group hover:bg-white hover:shadow-md transition-all">
                       <div>
                         <p className="font-black text-slate-800">{order.title}</p>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Ref: #{order.id}</p>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Ref Cloud: #{order.id}</p>
                       </div>
                       <div className="flex items-center gap-4">
                         <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border ${
