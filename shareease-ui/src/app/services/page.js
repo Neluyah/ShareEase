@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar'; 
 
+// Forçage de l'URL de production pour éviter l'erreur localhost:5000
+const API_URL = "https://shareease-uyub.onrender.com/api";
+
 export default function ServicesPage() {
   const router = useRouter();
   const [services, setServices] = useState([]);
@@ -19,7 +22,8 @@ export default function ServicesPage() {
 
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/services');
+        // Remplacement de localhost par l'URL Render
+        const response = await fetch(`${API_URL}/services`);
         const data = await response.json();
         setServices(Array.isArray(data) ? data : []);
       } catch (error) {
@@ -40,7 +44,8 @@ export default function ServicesPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/orders', {
+      // Utilisation de l'URL Render pour les commandes
+      const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -56,7 +61,7 @@ export default function ServicesPage() {
         alert("Erreur lors de l'enregistrement de la commande.");
       }
     } catch (error) {
-      alert("⚠️ Erreur : Impossible de contacter le serveur.");
+      alert("⚠️ Erreur : Impossible de contacter le serveur de production.");
     }
   };
 
@@ -73,7 +78,7 @@ export default function ServicesPage() {
         <div className="mb-12">
           <h1 className="text-5xl font-black tracking-tight mb-4 text-slate-900">Découvrez nos Services</h1>
           <p className="text-xl text-slate-400 font-medium italic underline decoration-blue-100">
-            Données réelles extraites de SQLite via API sécurisée.
+            Connecté au Cloud Render via API sécurisée.
           </p>
         </div>
 
@@ -97,7 +102,7 @@ export default function ServicesPage() {
         {/* GRILLE DE SERVICES */}
         {loading ? (
           <div className="text-center py-20 font-bold text-slate-300 animate-pulse">
-            Chargement sécurisé des services...
+            Chargement sécurisé depuis Render...
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -106,7 +111,6 @@ export default function ServicesPage() {
                 key={service.id} 
                 className="group bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500"
               >
-                {/* SECTION IMAGE DYNAMIQUE */}
                 <div className="relative h-64 bg-slate-100 flex items-center justify-center overflow-hidden">
                   {service.image_url ? (
                     <img 
@@ -151,7 +155,7 @@ export default function ServicesPage() {
 
         {!loading && filteredServices.length === 0 && (
           <div className="text-center py-20 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
-            <p className="text-slate-400 font-black italic">Aucun service trouvé dans la base de données.</p>
+            <p className="text-slate-400 font-black italic">Aucun service trouvé sur le serveur Render.</p>
           </div>
         )}
       </main>
