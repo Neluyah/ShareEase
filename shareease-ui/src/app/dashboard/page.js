@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar'; 
 
+// Forçage de l'URL de l'API vers ton serveur Render officiel
+const API_URL = "https://shareease-uyub.onrender.com/api";
+
 export default function ProviderDashboard() {
   const router = useRouter();
   const [services, setServices] = useState([]);
@@ -32,19 +35,19 @@ export default function ProviderDashboard() {
 
     const fetchDashboardData = async () => {
       try {
+        // Appels API vers Render au lieu de localhost
         const [resServices, resOrders] = await Promise.all([
-          fetch('http://localhost:5000/api/services'),
-          fetch(`http://localhost:5000/api/provider/orders/${currentUser.id}`)
+          fetch(`${API_URL}/services`),
+          fetch(`${API_URL}/provider/orders/${currentUser.id}`)
         ]);
 
         const sData = await resServices.json();
         const oData = await resOrders.json();
         
-        // Filtrage pour n'afficher que les services appartenant à ce fournisseur
         setServices(Array.isArray(sData) ? sData.filter(s => s.provider_id === currentUser.id) : []);
         setOrders(Array.isArray(oData) ? oData : []);
       } catch (error) {
-        console.error("Erreur de récupération:", error);
+        console.error("Erreur de récupération Cloud:", error);
       } finally {
         setLoading(false);
       }
@@ -56,7 +59,7 @@ export default function ProviderDashboard() {
   // FONCTION DE MISE À JOUR DU STATUT DES COMMANDES
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/orders/${id}`, {
+      const res = await fetch(`${API_URL}/orders/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
@@ -67,7 +70,7 @@ export default function ProviderDashboard() {
         alert(`La commande est maintenant : ${status}`);
       }
     } catch (error) {
-      alert("Erreur lors de la mise à jour");
+      alert("Erreur Cloud lors de la mise à jour");
     }
   };
 
@@ -79,7 +82,7 @@ export default function ProviderDashboard() {
     
     if (newTitle && newPrice) {
       try {
-        const res = await fetch(`http://localhost:5000/api/services/${service.id}`, {
+        const res = await fetch(`${API_URL}/services/${service.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -91,16 +94,16 @@ export default function ProviderDashboard() {
         });
         
         if (res.ok) {
-          alert("✅ Service mis à jour avec succès !");
-          window.location.reload(); // Recharge pour synchroniser l'affichage
+          alert("✅ Service mis à jour avec succès sur Render !");
+          window.location.reload(); 
         }
       } catch (error) {
-        alert("Erreur lors de la modification");
+        alert("Erreur lors de la modification distante");
       }
     }
   };
 
-  if (loading) return <div className="p-20 text-center font-black animate-pulse">Chargement de votre espace vendeur...</div>;
+  if (loading) return <div className="p-20 text-center font-black animate-pulse">Chargement de votre espace vendeur Cloud...</div>;
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
@@ -112,7 +115,7 @@ export default function ProviderDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div className="space-y-2">
             <h1 className="text-5xl font-black tracking-tight text-slate-900">Espace Fournisseur</h1>
-            <p className="text-xl text-slate-400 font-medium italic underline decoration-blue-200">Session : {user?.name}</p>
+            <p className="text-xl text-slate-400 font-medium italic underline decoration-blue-200">Session Cloud : {user?.name}</p>
           </div>
           <button 
             onClick={() => router.push('/dashboard/add-service')}
@@ -132,7 +135,7 @@ export default function ProviderDashboard() {
           <div className="grid gap-4">
             {orders.length === 0 ? (
               <div className="p-10 bg-white rounded-[2rem] border border-dashed text-center text-slate-400 font-bold">
-                Aucune commande client reçue.
+                Aucune commande client reçue sur le serveur.
               </div>
             ) : (
               orders.map(order => (
@@ -181,16 +184,15 @@ export default function ProviderDashboard() {
           </div>
         </section>
 
-        {/* --- CATALOGUE AVEC IMAGES ET ÉDITION --- */}
+        {/* --- CATALOGUE --- */}
         <section>
           <h2 className="text-2xl font-black mb-8 flex items-center gap-3">
             <div className="w-2 h-8 bg-blue-500 rounded-full"></div>
-            Mon Catalogue ({services.length})
+            Mon Catalogue Distant ({services.length})
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {services.map((service) => (
               <div key={service.id} className="bg-white rounded-[3rem] overflow-hidden border border-gray-100 shadow-sm flex flex-col sm:flex-row hover:shadow-lg transition-all">
-                {/* IMAGE */}
                 <div className="w-full sm:w-48 h-48 bg-slate-50 flex items-center justify-center border-r overflow-hidden">
                   {service.image_url ? (
                     <img 
@@ -204,7 +206,6 @@ export default function ProviderDashboard() {
                   )}
                 </div>
 
-                {/* INFOS */}
                 <div className="p-8 flex flex-col justify-between flex-1">
                   <div>
                     <h3 className="text-xl font-black text-slate-900 mb-2">{service.title}</h3>
