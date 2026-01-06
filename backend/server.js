@@ -7,12 +7,7 @@ const app = express();
 const db = new sqlite3.Database('./shareease.db');
 
 app.use(express.json());
-app.use(cors({
-  origin: 'https://share-ease-theta.vercel.app', // Ton URL Vercel officielle
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  credentials: true
-}));
-
+app.use(cors());
 // --- INITIALISATION DES TABLES (Security by Design) ---
 db.serialize(() => {
     // Table Utilisateurs
