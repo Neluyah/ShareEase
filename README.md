@@ -60,18 +60,43 @@ Commandes : Acceptation ou refus des demandes clients en un clic.
 
 
 
-### ⚙️ 4. Déploiement & DevOps
-Le projet utilise des pratiques DevOps modernes pour garantir la sécurité du déploiement:
+⚙️ 4. Installation et Déploiement <a name="installation"></a>
+Le projet utilise des pratiques DevOps pour garantir la sécurité. 
+
+Pré-requis
+Node.js (v18+)
+
+npm
+
+Installation Locale
+Cloner le dépôt :
+
+Bash
+
+git clone [URL_DU_REPO]
+Lancer le Serveur (Backend) :
+
+Bash
+
+cd backend
+npm install
+node server.js
+Lancer l'Interface (Frontend) :
+
+Bash
+
+cd shareease-ui
+npm install
+npm run dev
+Sécurité du Déploiement Cloud
+
+Secrets : Utilisation de variables d'environnement (.env) isolées (jamais commit). 
 
 
-* Secrets & Environnement : Utilisation de variables d'environnement (.env) pour isoler les clés d'API et les URL de production.
-
-* CI/CD : Déploiement automatisé à chaque push sur la branche main.
-
-* Hygiène du Code : Exclusion stricte du dossier node_modules et des binaires Windows pour une compilation native propre sur serveurs Linux.
+CI/CD : Déploiement automatisé sur Vercel et Render. 
 
 
-HTTPS/TLS : Toutes les communications entre Vercel et Render sont chiffrées.
+Communication : Chiffrement HTTPS/TLS activé sur tous les échanges.
 
 
 ### 🔮 5. Perspectives d'Évolution
