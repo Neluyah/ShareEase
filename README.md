@@ -7,11 +7,11 @@ ShareEase est une plateforme web d'économie du partage permettant la mise en re
 🏗️ 1. Architecture Système Distribuée
 L'application repose sur une architecture client-serveur moderne, découplée et entièrement déployée dans le Cloud :
 
-Frontend : Développé avec Next.js 14 et Tailwind CSS, hébergé sur Vercel.
+- Frontend : Développé avec Next.js 14 et Tailwind CSS, hébergé sur Vercel.
 
-Backend : API REST construite avec Node.js et Express, hébergée sur Render (environnement Linux).
+- Backend : API REST construite avec Node.js et Express, hébergée sur Render (environnement Linux).
 
-Base de Données : SQLite. Un choix stratégique pour l'intégrité référentielle et la portabilité des données via SQL.
+- Base de Données : SQLite. Un choix stratégique pour l'intégrité référentielle et la portabilité des données via SQL.
 
 
 🔐 2. Modèle de Sécurité (Analyse STRIDE)
@@ -50,13 +50,13 @@ Commandes : Acceptation ou refus des demandes clients en un clic.
 
 🔸 Client (Consommation de Services)
 
-Exploration : Recherche et filtrage par catégories.
+* Exploration : Recherche et filtrage par catégories.
 
 
-Workflow : Passage de commande sécurisé et suivi du statut en temps réel.
+* Workflow : Passage de commande sécurisé et suivi du statut en temps réel.
 
 
-Profil : Gestion des informations personnelles et historique.
+* Profil : Gestion des informations personnelles et historique.
 
 
 
@@ -64,11 +64,11 @@ Profil : Gestion des informations personnelles et historique.
 Le projet utilise des pratiques DevOps modernes pour garantir la sécurité du déploiement:
 
 
-Secrets & Environnement : Utilisation de variables d'environnement (.env) pour isoler les clés d'API et les URL de production.
+* Secrets & Environnement : Utilisation de variables d'environnement (.env) pour isoler les clés d'API et les URL de production.
 
-CI/CD : Déploiement automatisé à chaque push sur la branche main.
+* CI/CD : Déploiement automatisé à chaque push sur la branche main.
 
-Hygiène du Code : Exclusion stricte du dossier node_modules et des binaires Windows pour une compilation native propre sur serveurs Linux.
+* Hygiène du Code : Exclusion stricte du dossier node_modules et des binaires Windows pour une compilation native propre sur serveurs Linux.
 
 
 HTTPS/TLS : Toutes les communications entre Vercel et Render sont chiffrées.
@@ -76,11 +76,11 @@ HTTPS/TLS : Toutes les communications entre Vercel et Render sont chiffrées.
 
 🔮 5. Perspectives d'Évolution
 
-Authentification MFA : Intégration de codes TOTP pour les comptes administrateurs.
+* Authentification MFA : Intégration de codes TOTP pour les comptes administrateurs.
 
 
-Paiement Intégré : Connexion à l'API Stripe pour sécuriser les transactions financières.
+* Paiement Intégré : Connexion à l'API Stripe pour sécuriser les transactions financières.
 
 
-JWT avancés : Implémentation de Refresh Tokens pour une gestion de session encore plus robuste.
+* JWT avancés : Implémentation de Refresh Tokens pour une gestion de session encore plus robuste.
 
