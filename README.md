@@ -1,10 +1,10 @@
-🛡️ ShareEase : Écosystème Cloud Sécurisé (Full-Stack)
+## 🛡️ ShareEase : Écosystème Cloud Sécurisé (Full-Stack)
 
 ShareEase est une plateforme web d'économie du partage permettant la mise en relation sécurisée entre prestataires et clients. Ce projet a été développé en suivant un cycle de vie de développement logiciel sécurisé (SDLC sécurisé) pour garantir la protection des données et des utilisateurs.
 
 
 
-🏗️ 1. Architecture Système Distribuée
+### 🏗️ 1. Architecture Système Distribuée
 L'application repose sur une architecture client-serveur moderne, découplée et entièrement déployée dans le Cloud :
 
 - Frontend : Développé avec Next.js 14 et Tailwind CSS, hébergé sur Vercel.
@@ -14,7 +14,7 @@ L'application repose sur une architecture client-serveur moderne, découplée et
 - Base de Données : SQLite. Un choix stratégique pour l'intégrité référentielle et la portabilité des données via SQL.
 
 
-🔐 2. Modèle de Sécurité (Analyse STRIDE)
+### 🔐 2. Modèle de Sécurité (Analyse STRIDE)
 Conformément aux exigences du projet, nous avons identifié et atténué une menace concrète par catégorie du modèle STRIDE:
 
 | Catégorie | Menace Identifiée | Mesure d'Atténuation (Mitigation) |
@@ -27,7 +27,7 @@ Conformément aux exigences du projet, nous avons identifié et atténué une me
 | **E**levation | Accès client aux fonctions d'administration. | Contrôle d'accès basé sur les rôles (**RBAC**) rigoureux. |
 
 
-👥 3. Fonctionnalités par Rôle (RBAC)
+### 👥 3. Fonctionnalités par Rôle (RBAC)
 Le système applique le principe du moindre privilège pour chaque type d'utilisateur:
 
 🔸 Administrateur (Gestion & Surveillance)
@@ -60,7 +60,7 @@ Commandes : Acceptation ou refus des demandes clients en un clic.
 
 
 
-⚙️ 4. Déploiement & DevOps
+### ⚙️ 4. Déploiement & DevOps
 Le projet utilise des pratiques DevOps modernes pour garantir la sécurité du déploiement:
 
 
@@ -74,7 +74,7 @@ Le projet utilise des pratiques DevOps modernes pour garantir la sécurité du d
 HTTPS/TLS : Toutes les communications entre Vercel et Render sont chiffrées.
 
 
-🔮 5. Perspectives d'Évolution
+### 🔮 5. Perspectives d'Évolution
 
 * Authentification MFA : Intégration de codes TOTP pour les comptes administrateurs.
 
