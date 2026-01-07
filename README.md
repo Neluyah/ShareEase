@@ -1,68 +1,80 @@
 🛡️ ShareEase : Écosystème Cloud Sécurisé (Full-Stack)
-ShareEase est une plateforme de mise en relation entre prestataires et clients, désormais déployée sur une infrastructure Cloud distribuée. Ce projet démontre la mise en œuvre de la Programmation Sécurisée, du modèle STRIDE et de la gestion d'environnements de production réels.
+
+ShareEase est une plateforme web d'économie du partage permettant la mise en relation sécurisée entre prestataires et clients. Ce projet a été développé en suivant un cycle de vie de développement logiciel sécurisé (SDLC sécurisé) pour garantir la protection des données et des utilisateurs.
+
 
 🏗️ 1. Architecture Système Distribuée
-L'application utilise une architecture moderne découplée, garantissant une haute disponibilité et une sécurité accrue :
+L'application repose sur une architecture client-serveur moderne, découplée et entièrement déployée dans le Cloud :
 
-Frontend (Vercel) : Interface développée en Next.js 14, déployée sur Vercel pour bénéficier d'une distribution mondiale via CDN.
+Frontend : Développé avec Next.js 14 et Tailwind CSS, hébergé sur Vercel.
 
-Backend (Render) : API REST construite avec Node.js et Express, hébergée sur Linux (Render).
+Backend : API REST construite avec Node.js et Express, hébergée sur Render (environnement Linux).
 
-Base de Données : SQLite embarquée côté serveur pour une gestion relationnelle SQL performante et portable.
+Base de Données : SQLite. Un choix stratégique pour l'intégrité référentielle et la portabilité des données via SQL.
 
-🔐 2. Modèle de Sécurité et DevOps
-La sécurité a été renforcée lors du passage en production pour répondre aux contraintes du Cloud :
+🔐 2. Modèle de Sécurité (Analyse STRIDE)
+Conformément aux exigences du projet, nous avons identifié et atténué une menace concrète par catégorie du modèle STRIDE:
 
-Hachage Cryptographique : Utilisation de Bcryptjs (bibliothèque portable) avec 10 tours de "salt" pour protéger les mots de passe contre les attaques par force brute.
+Catégorie,Menace Identifiée,Mesure d'Atténuation (Mitigation)
+Spoofing,Usurpation d'identité lors de la connexion.,Authentification forte et gestion sécurisée des sessions.
+Tampering,Modification non autorisée du prix d'un service.,Validation stricte côté serveur et requêtes SQL paramétrées.
+Repudiation,Un utilisateur nie avoir passé une commande.,Journalisation (Logs) immuable des transactions en base de données.
+Information,Fuite de mots de passe en cas de compromission.,Hachage avec Bcrypt (10 rounds de salt).
+Denial of Service,Saturation des points d'accès API.,Limitation du débit (Rate Limiting) sur les routes sensibles.
+Elevation,Accès client aux fonctions d'administration.,Contrôle d'accès basé sur les rôles (RBAC) rigoureux.
 
-Contrôle d'Accès (RBAC) : Système de Role-Based Access Control strict filtrant les accès Admin, Fournisseur et Client.
+👥 3. Fonctionnalités par Rôle (RBAC)
+Le système applique le principe du moindre privilège pour chaque type d'utilisateur:
 
-Sécurité des Transmissions (CORS) : Configuration avancée des en-têtes CORS pour autoriser uniquement les communications entre le domaine Vercel et l'API Render.
+🔸 Administrateur (Gestion & Surveillance)
 
-Hygiène du Dépôt (DevOps) : Exclusion systématique des dépendances natives (node_modules) et des fichiers binaires Windows pour garantir une compilation propre sur les serveurs Linux.
+Monitoring : Statistiques en temps réel sur les utilisateurs et services.
 
-SSL/TLS : Communications entièrement chiffrées via HTTPS sur l'ensemble du réseau.
+Modération : Suppression de comptes ou de contenus inappropriés.
 
-👥 3. Fonctionnalités Cloud par Rôle
-🔸 Administration Système
-Monitoring Live : Statistiques en temps réel sur l'état de la base de données SQLite.
+Audit : Consultation des logs de sécurité système.
 
-Audit STRIDE : Journalisation des accès et des actions sensibles visible dans le panneau de contrôle.
+🔸 Fournisseur (Gestion du Catalogue)
 
-🔸 Espace Fournisseur (Pro)
-Gestion Distante : Publication de services avec injection d'URL d'images dynamiques.
+Publication : Ajout de services avec titres, prix et images dynamiques.
 
-Workflow Commandes : Réception et traitement des commandes clients avec mise à jour instantanée du statut dans le Cloud.
 
-🔸 Espace Client
-Exploration et Filtres : Recherche dynamique parmi les services stockés sur Render.
+Édition : Mise à jour rapide des offres depuis le dashboard fournisseur.
 
-Suivi de Commande : Interface de suivi en temps réel (Acceptée/Refusée) avec notifications persistantes.
 
-🔌 4. Documentation de l'API (Production)
-L'API est accessible via l'endpoint sécurisé : https://shareease-uyub.onrender.com/api
+Commandes : Acceptation ou refus des demandes clients en un clic.
 
-POST /register : Création de compte avec hachage Bcrypt.
+🔸 Client (Consommation de Services)
 
-GET /services : Extraction du catalogue depuis SQLite.
+Exploration : Recherche et filtrage par catégories.
 
-PATCH /orders/:id : Transition d'état sécurisée pour les commandes.
 
-DELETE /users/:id : Suppression administrative avec intégrité référentielle (Cascading Deletes).
+Workflow : Passage de commande sécurisé et suivi du statut en temps réel.
 
-⚙️ 5. Déploiement et Maintenance
-Déploiement Cloud
-Backend : Automatisé sur Render via branche main (Linux).
 
-Frontend : Automatisé sur Vercel avec injection de variables d'environnement (NEXT_PUBLIC_API_URL).
+Profil : Gestion des informations personnelles et historique.
 
-Procédure de mise à jour locale
-Bash
+⚙️ 4. Déploiement & DevOps
+Le projet utilise des pratiques DevOps modernes pour garantir la sécurité du déploiement:
 
-# Pour mettre à jour l'application, poussez simplement sur GitHub :
-git add .
-git commit -m "Update: description de la modification"
-git push origin main
-Le CI/CD de Vercel et Render se chargera de reconstruire l'application en quelques minutes.
 
-© 2026 - ShareEase - Excellence en Programmation Sécurisée & Cloud Computing
+Secrets & Environnement : Utilisation de variables d'environnement (.env) pour isoler les clés d'API et les URL de production.
+
+CI/CD : Déploiement automatisé à chaque push sur la branche main.
+
+Hygiène du Code : Exclusion stricte du dossier node_modules et des binaires Windows pour une compilation native propre sur serveurs Linux.
+
+
+HTTPS/TLS : Toutes les communications entre Vercel et Render sont chiffrées.
+
+🔮 5. Perspectives d'Évolution
+
+Authentification MFA : Intégration de codes TOTP pour les comptes administrateurs.
+
+
+Paiement Intégré : Connexion à l'API Stripe pour sécuriser les transactions financières.
+
+
+JWT avancés : Implémentation de Refresh Tokens pour une gestion de session encore plus robuste.
+
+© 2026 ShareEase - Excellence en Programmation Sécurisée
