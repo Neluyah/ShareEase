@@ -15,13 +15,14 @@ Base de Données : SQLite. Un choix stratégique pour l'intégrité référentie
 🔐 2. Modèle de Sécurité (Analyse STRIDE)
 Conformément aux exigences du projet, nous avons identifié et atténué une menace concrète par catégorie du modèle STRIDE:
 
-Catégorie,Menace Identifiée,Mesure d'Atténuation (Mitigation)
-Spoofing,Usurpation d'identité lors de la connexion.,Authentification forte et gestion sécurisée des sessions.
-Tampering,Modification non autorisée du prix d'un service.,Validation stricte côté serveur et requêtes SQL paramétrées.
-Repudiation,Un utilisateur nie avoir passé une commande.,Journalisation (Logs) immuable des transactions en base de données.
-Information,Fuite de mots de passe en cas de compromission.,Hachage avec Bcrypt (10 rounds de salt).
-Denial of Service,Saturation des points d'accès API.,Limitation du débit (Rate Limiting) sur les routes sensibles.
-Elevation,Accès client aux fonctions d'administration.,Contrôle d'accès basé sur les rôles (RBAC) rigoureux.
+| Catégorie | Menace Identifiée | Mesure d'Atténuation (Mitigation) |
+| :--- | :--- | :--- |
+| **S**poofing | Usurpation d'identité lors de la connexion. | Authentification forte et gestion sécurisée des sessions. |
+| **T**ampering | Modification non autorisée du prix d'un service. | Validation stricte côté serveur et requêtes SQL paramétrées. |
+| **R**epudiation | Un utilisateur nie avoir passé une commande. | Journalisation (Logs) immuable des transactions en base de données. |
+| **I**nformation | Fuite de mots de passe en cas de compromission. | Hachage avec **Bcrypt** (10 rounds de salt). |
+| **D**enial of Service | Saturation des points d'accès API. | Limitation du débit (Rate Limiting) sur les routes sensibles. |
+| **E**levation | Accès client aux fonctions d'administration. | Contrôle d'accès basé sur les rôles (**RBAC**) rigoureux. |
 
 👥 3. Fonctionnalités par Rôle (RBAC)
 Le système applique le principe du moindre privilège pour chaque type d'utilisateur:
