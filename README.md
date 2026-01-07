@@ -1,113 +1,68 @@
+🛡️ ShareEase : Écosystème Cloud Sécurisé (Full-Stack)
+ShareEase est une plateforme de mise en relation entre prestataires et clients, désormais déployée sur une infrastructure Cloud distribuée. Ce projet démontre la mise en œuvre de la Programmation Sécurisée, du modèle STRIDE et de la gestion d'environnements de production réels.
 
+🏗️ 1. Architecture Système Distribuée
+L'application utilise une architecture moderne découplée, garantissant une haute disponibilité et une sécurité accrue :
 
-# 🛡️ ShareEase : Écosystème de Services Sécurisé (Full-Stack)
+Frontend (Vercel) : Interface développée en Next.js 14, déployée sur Vercel pour bénéficier d'une distribution mondiale via CDN.
 
-**ShareEase** est une application web complète de mise en relation entre prestataires et clients. Ce projet a été conçu en respectant les principes de la **Programmation Sécurisée** et du modèle **STRIDE** pour garantir l'intégrité et la confidentialité des échanges.
+Backend (Render) : API REST construite avec Node.js et Express, hébergée sur Linux (Render).
 
-##  Table des Matières
+Base de Données : SQLite embarquée côté serveur pour une gestion relationnelle SQL performante et portable.
 
-1. [Architecture Système]
-2. [Modèle de Sécurité (Cyber)]
-3. [Fonctionnalités par Rôle]
-4. [Documentation de l'API]
-5. [Installation et Déploiement]
-6. [Perspectives d'Évolution]
+🔐 2. Modèle de Sécurité et DevOps
+La sécurité a été renforcée lors du passage en production pour répondre aux contraintes du Cloud :
 
----
+Hachage Cryptographique : Utilisation de Bcryptjs (bibliothèque portable) avec 10 tours de "salt" pour protéger les mots de passe contre les attaques par force brute.
 
-## 🏗️ 1. Architecture Système <a name="architecture"></a>
+Contrôle d'Accès (RBAC) : Système de Role-Based Access Control strict filtrant les accès Admin, Fournisseur et Client.
 
-L'application repose sur une architecture découplée (Client-Serveur) :
+Sécurité des Transmissions (CORS) : Configuration avancée des en-têtes CORS pour autoriser uniquement les communications entre le domaine Vercel et l'API Render.
 
-* **Frontend** : Framework **Next.js 14** utilisant les *Client Components* pour une interface réactive et **Tailwind CSS** pour un design premium.
-* **Backend** : Serveur **Node.js** avec **Express**, gérant la logique métier et les restrictions d'accès.
-* **Base de Données** : **SQLite**. Un choix stratégique pour la portabilité et la gestion relationnelle via SQL (Clés étrangères, Intégrité).
+Hygiène du Dépôt (DevOps) : Exclusion systématique des dépendances natives (node_modules) et des fichiers binaires Windows pour garantir une compilation propre sur les serveurs Linux.
 
----
+SSL/TLS : Communications entièrement chiffrées via HTTPS sur l'ensemble du réseau.
 
-## 🔐 2. Modèle de Sécurité (Cyber) <a name="sécurité"></a>
+👥 3. Fonctionnalités Cloud par Rôle
+🔸 Administration Système
+Monitoring Live : Statistiques en temps réel sur l'état de la base de données SQLite.
 
-La sécurité n'est pas une option mais le cœur du projet :
+Audit STRIDE : Journalisation des accès et des actions sensibles visible dans le panneau de contrôle.
 
-* **Hachage Cryptographique** : Utilisation de **Bcrypt** avec 10 tours de "salt" pour le stockage des mots de passe. Aucun mot de passe ne circule ou n'est stocké en clair.
-* **Contrôle d'Accès (RBAC)** : Système de *Role-Based Access Control* implémenté côté Client (redirections) et côté Serveur (filtrage des données).
-* **Protection contre l'Élévation de Privilèges** : Un client ne peut pas accéder aux routes `/admin` ou `/dashboard` (vendeur).
-* **Logs d'Audit (STRIDE)** : Journalisation en temps réel des actions sensibles (connexions, modifications de base de données) visible uniquement par l'administrateur.
-* **Intégrité Référentielle** : Gestion des **Cascading Deletes**. Si un service est supprimé, toutes les commandes associées sont nettoyées automatiquement pour éviter les données orphelines.
+🔸 Espace Fournisseur (Pro)
+Gestion Distante : Publication de services avec injection d'URL d'images dynamiques.
 
----
+Workflow Commandes : Réception et traitement des commandes clients avec mise à jour instantanée du statut dans le Cloud.
 
-## 👥 3. Fonctionnalités par Rôle <a name="rôles"></a>
+🔸 Espace Client
+Exploration et Filtres : Recherche dynamique parmi les services stockés sur Render.
 
-### 🔸 Espace Administrateur
+Suivi de Commande : Interface de suivi en temps réel (Acceptée/Refusée) avec notifications persistantes.
 
-* **Dashboard de Monitoring** : Statistiques en temps réel (nombre d'utilisateurs, de services).
-* **Modération** : Possibilité de supprimer n'importe quel compte ou service inapproprié.
-* **Surveillance** : Consultation des logs système sécurisés.
+🔌 4. Documentation de l'API (Production)
+L'API est accessible via l'endpoint sécurisé : https://shareease-uyub.onrender.com/api
 
-### 🔸 Espace Fournisseur (Pro)
+POST /register : Création de compte avec hachage Bcrypt.
 
-* **Gestion du Catalogue** : Ajout de nouveaux services avec titre, prix, catégorie et **URL d'image dynamique**.
-* **Modification Rapide** : Système d'édition en direct des prix et des descriptions depuis le dashboard.
-* **Traitement des Commandes** : Interface permettant d'accepter ou de refuser les demandes des clients en un clic.
+GET /services : Extraction du catalogue depuis SQLite.
 
-### 🔸 Espace Client
+PATCH /orders/:id : Transition d'état sécurisée pour les commandes.
 
-* **Catalogue Public** : Recherche et filtrage des services par catégorie.
-* **Passage de Commande** : Système de commande sécurisé lié à l'ID du fournisseur.
-* **Profil Personnel** : Suivi du statut des commandes (En attente, Acceptée, Refusée) et gestion des informations personnelles.
+DELETE /users/:id : Suppression administrative avec intégrité référentielle (Cascading Deletes).
 
----
+⚙️ 5. Déploiement et Maintenance
+Déploiement Cloud
+Backend : Automatisé sur Render via branche main (Linux).
 
-## 🔌 4. Documentation de l'API <a name="api"></a>
+Frontend : Automatisé sur Vercel avec injection de variables d'environnement (NEXT_PUBLIC_API_URL).
 
-Quelques-unes des routes principales développées :
+Procédure de mise à jour locale
+Bash
 
-* `POST /api/register` : Création sécurisée d'un compte.
-* `GET /api/services` : Récupération du catalogue complet.
-* `PUT /api/services/:id` : Mise à jour des données d'un service (Vendeur uniquement).
-* `PATCH /api/orders/:id` : Changement de statut d'une commande.
-* `DELETE /api/users/:id` : Suppression d'un compte (Admin uniquement).
+# Pour mettre à jour l'application, poussez simplement sur GitHub :
+git add .
+git commit -m "Update: description de la modification"
+git push origin main
+Le CI/CD de Vercel et Render se chargera de reconstruire l'application en quelques minutes.
 
----
-
-## ⚙️ 5. Installation <a name="installation"></a>
-
-1. **Cloner le dépôt** : `git clone [URL_DU_DEPOT]`
-2. **Lancer le Serveur** :
-```bash
-cd backend
-npm install
-node server.js
-
-```
-
-
-3. **Lancer l'Interface** :
-```bash
-cd shareease-ui
-npm install
-npm run dev
-
-```
-
-
-4. **Scripts Utiles** :
-* `node set-admin.js` : Pour créer l'administrateur système.
-* `node update-db.js` : Pour mettre à jour la structure SQLite sans perdre les données.
-
-
-
----
-
-## 🔮 6. Évolutions Futures <a name="évolutions"></a>
-
-* **Déploiement HTTPS** : Mise en place de certificats SSL/TLS pour chiffrer les échanges en production.
-* **Tokens JWT** : Implémentation de JSON Web Tokens pour une gestion de session encore plus sécurisée.
-* **Paiement Intégré** : Connexion à l'API Stripe pour finaliser les commandes.
-
----
-
-**© 2026 - ShareEase - Projet de Programmation Sécurisée**
-
----
+© 2026 - ShareEase - Excellence en Programmation Sécurisée & Cloud Computing
