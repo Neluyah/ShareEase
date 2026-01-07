@@ -3,6 +3,7 @@
 ShareEase est une plateforme web d'économie du partage permettant la mise en relation sécurisée entre prestataires et clients. Ce projet a été développé en suivant un cycle de vie de développement logiciel sécurisé (SDLC sécurisé) pour garantir la protection des données et des utilisateurs.
 
 
+
 🏗️ 1. Architecture Système Distribuée
 L'application repose sur une architecture client-serveur moderne, découplée et entièrement déployée dans le Cloud :
 
@@ -11,6 +12,7 @@ Frontend : Développé avec Next.js 14 et Tailwind CSS, hébergé sur Vercel.
 Backend : API REST construite avec Node.js et Express, hébergée sur Render (environnement Linux).
 
 Base de Données : SQLite. Un choix stratégique pour l'intégrité référentielle et la portabilité des données via SQL.
+
 
 🔐 2. Modèle de Sécurité (Analyse STRIDE)
 Conformément aux exigences du projet, nous avons identifié et atténué une menace concrète par catégorie du modèle STRIDE:
@@ -23,6 +25,7 @@ Conformément aux exigences du projet, nous avons identifié et atténué une me
 | **I**nformation | Fuite de mots de passe en cas de compromission. | Hachage avec **Bcrypt** (10 rounds de salt). |
 | **D**enial of Service | Saturation des points d'accès API. | Limitation du débit (Rate Limiting) sur les routes sensibles. |
 | **E**levation | Accès client aux fonctions d'administration. | Contrôle d'accès basé sur les rôles (**RBAC**) rigoureux. |
+
 
 👥 3. Fonctionnalités par Rôle (RBAC)
 Le système applique le principe du moindre privilège pour chaque type d'utilisateur:
@@ -55,6 +58,8 @@ Workflow : Passage de commande sécurisé et suivi du statut en temps réel.
 
 Profil : Gestion des informations personnelles et historique.
 
+
+
 ⚙️ 4. Déploiement & DevOps
 Le projet utilise des pratiques DevOps modernes pour garantir la sécurité du déploiement:
 
@@ -68,6 +73,7 @@ Hygiène du Code : Exclusion stricte du dossier node_modules et des binaires Win
 
 HTTPS/TLS : Toutes les communications entre Vercel et Render sont chiffrées.
 
+
 🔮 5. Perspectives d'Évolution
 
 Authentification MFA : Intégration de codes TOTP pour les comptes administrateurs.
@@ -78,4 +84,3 @@ Paiement Intégré : Connexion à l'API Stripe pour sécuriser les transactions 
 
 JWT avancés : Implémentation de Refresh Tokens pour une gestion de session encore plus robuste.
 
-© 2026 ShareEase - Excellence en Programmation Sécurisée
